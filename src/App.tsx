@@ -113,6 +113,8 @@ function Room({ roomCode }: { roomCode: string }) {
   const [clockOffset, setClockOffset] = useState(0);
   const [starting, setStarting] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
+  const identityRef = useRef(identity);
+  identityRef.current = identity;
 
   const applyState = useCallback((next: PublicRoomState) => {
     setClockOffset(next.serverNow - Date.now());
@@ -128,7 +130,7 @@ function Room({ roomCode }: { roomCode: string }) {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const clientId = crypto.randomUUID();
       const ws = new WebSocket(
-        `${protocol}//${window.location.host}/api/rooms/${roomCode}/ws?clientId=${encodeURIComponent(clientId)}&entrantId=${encodeURIComponent(identity)}`,
+        `${protocol}//${window.location.host}/api/rooms/${roomCode}/ws?clientId=${encodeURIComponent(clientId)}&entrantId=${encodeURIComponent(identityRef.current)}`,
       );
       wsRef.current = ws;
 

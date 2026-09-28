@@ -143,7 +143,7 @@ export class DraftRoom extends DurableObject<Env> {
     if (url.pathname === "/init" && request.method === "POST") return this.init(request);
     if (url.pathname === "/state" && request.method === "GET") return this.stateResponse();
     if (url.pathname === "/start" && request.method === "POST") return this.start(request);
-    if (url.pathname === "/ws") return this.connect(request);
+    if (url.pathname === "/ws") return this.handleWebSocket(request);
     return json({ error: "Not found." }, { status: 404 });
   }
 
@@ -175,7 +175,7 @@ export class DraftRoom extends DurableObject<Env> {
     return json({ ok: true });
   }
 
-  private async connect(request: Request) {
+  private async handleWebSocket(request: Request) {
     if (request.headers.get("Upgrade")?.toLowerCase() !== "websocket") {
       return json({ error: "Expected WebSocket upgrade." }, { status: 426 });
     }

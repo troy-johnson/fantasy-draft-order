@@ -8,6 +8,7 @@
     "build": "vite build",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.worker.json --noEmit",
     "test": "vitest run",
+    "test:e2e": "npm run build && node --experimental-strip-types test/e2e.mjs",
     "check": "npm run typecheck && npm test && npm run build",
     "deploy": "npm run check && wrangler deploy",
     "deploy:dry": "npm run check && wrangler deploy --dry-run"
